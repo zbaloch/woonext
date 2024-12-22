@@ -150,7 +150,7 @@ export default async function Home() {
 
             <div className="mx-auto max-w-2xl px-4 py-4 sm:px-6 sm:py-6 lg:max-w-7xl lg:px-8">
                 
-                <nav aria-label="Breadcrumb">
+                {/* <nav aria-label="Breadcrumb">
                     <ol role="list" className="flex items-center space-x-4">
                         <li>
                         <div className="flex items-center">
@@ -173,7 +173,7 @@ export default async function Home() {
                         <a href="#" aria-current="page" className="font-medium text-gray-500 hover:text-gray-600">Basic Tee</a>
                         </li>
                     </ol>
-                </nav>
+                </nav> */}
 
 
                 <div className="mt-4 lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
