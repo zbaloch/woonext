@@ -1,10 +1,9 @@
 import Footer from '@/components/Footer'
 import Navigation from '@/components/Navigation'
+import endpoint from '@/util/woo';
 import { gql, request } from 'graphql-request';
 
 export default async function Products() {
-
-  const endpoint = process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT;
     
     const productsCategoriesQuery = gql`
       query {
@@ -58,6 +57,7 @@ export default async function Products() {
       }
     `;
   
+    
     const data = await request(endpoint, productsCategoriesQuery) as { products: { nodes: any[] }, productCategories: { nodes: any[] } };
     const products = data.products.nodes;
     const categories = data.productCategories.nodes;

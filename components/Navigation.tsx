@@ -1,30 +1,20 @@
 'use client'
 
-import { Fragment, useState } from 'react'
+import { useState } from 'react'
 import {
   Dialog,
   DialogBackdrop,
   DialogPanel,
-  Popover,
-  PopoverButton,
   PopoverGroup,
-  PopoverPanel,
-  Tab,
-  TabGroup,
-  TabList,
-  TabPanel,
-  TabPanels,
 } from '@headlessui/react'
 import {
   Bars3Icon,
-  MagnifyingGlassIcon,
-  QuestionMarkCircleIcon,
   ShoppingBagIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline'
-import { ChevronDownIcon } from '@heroicons/react/20/solid'
+import Link from 'next/link'
 
-const currencies = ['CAD', 'USD', 'AUD', 'EUR', 'GBP']
+// const currencies = ['CAD', 'USD', 'AUD', 'EUR', 'GBP']
 const navigation = {
   categories: [
     // {
@@ -257,12 +247,12 @@ export default function Navigation() {
                 <div className="flex h-16 items-center justify-between">
                   {/* Logo (lg+) */}
                   <div className="hidden lg:flex lg:flex-1 lg:items-center">
-                  <a href="/" className="">
+                  <Link href="/" className="">
                     <div className="flex items-center gap-2 text-lg font-bold">
                       <img src="/logo.svg" alt="Logo" width={32} height={32} />
                       <span>WooNext</span>
                     </div>
-                  </a>
+                  </Link>
                     {/* <a href="#">
                       <span className="sr-only">Your Company</span>
                       <img
@@ -351,12 +341,12 @@ export default function Navigation() {
                   </div>
 
                   {/* Logo (lg-) */}
-                  <a href="/" className="lg:hidden">
+                  <Link href="/" className="lg:hidden">
                     <div className="flex items-center gap-2 text-lg font-bold">
                       <img src="/logo.svg" alt="Logo" width={32} height={32} />
                       <span>WooNext</span>
                     </div>
-                  </a>
+                  </Link>
                   {/* <a href="/" className="lg:hidden">
                     <span className="sr-only">WooNext</span>
                     <img
@@ -383,14 +373,14 @@ export default function Navigation() {
 
                       {/* Cart */}
                       <div className="ml-4 flow-root lg:ml-8">
-                        <a href="#" className="group -m-2 flex items-center p-2">
+                        <Link href="#" className="group -m-2 flex items-center p-2">
                           <ShoppingBagIcon
                             aria-hidden="true"
                             className="size-6 shrink-0 text-gray-400 group-hover:text-gray-500"
                           />
                           <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">0</span>
                           <span className="sr-only">items in cart, view bag</span>
-                        </a>
+                        </Link>
                       </div>
                     </div>
                   </div>

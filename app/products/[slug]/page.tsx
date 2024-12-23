@@ -1,14 +1,8 @@
 import Footer from "@/components/Footer";
-import Hero from "@/components/Hero";
 import Navigation from "@/components/Navigation";
 import { gql, request } from 'graphql-request';
 
 import {
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
-  Radio,
-  RadioGroup,
   Tab,
   TabGroup,
   TabList,
@@ -16,7 +10,7 @@ import {
   TabPanels,
 } from '@headlessui/react'
 import { StarIcon } from '@heroicons/react/20/solid'
-import { HeartIcon, MinusIcon, PlusIcon } from '@heroicons/react/24/outline'
+import endpoint from "@/util/woo";
 
 const product = {
   name: 'Zip Tote Basket',
@@ -73,15 +67,13 @@ const product = {
   ],
 }
 
-function classNames(...classes) {
+function classNames(...classes: (string | boolean | undefined)[]): string {
   return classes.filter(Boolean).join(' ')
 }
 
 export default async function Home() {
 
 //   const [selectedColor, setSelectedColor] = useState(product.colors[0])
-
-  const endpoint = process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT;
   
   const productsCategoriesQuery = gql`
     query {
