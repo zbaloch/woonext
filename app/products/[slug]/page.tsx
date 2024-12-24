@@ -71,67 +71,64 @@ function classNames(...classes: (string | boolean | undefined)[]): string {
   return classes.filter(Boolean).join(' ')
 }
 
-export default async function Home() {
+export interface ProductPageProps {
+  params: {
+    slug: string
+  }
+}
 
-//   const [selectedColor, setSelectedColor] = useState(product.colors[0])
+export default async function Product({ params }: ProductPageProps) {
   
-  const productsCategoriesQuery = gql`
-    query {
-      products (first: 4, where: {orderby: {field: DATE, order: DESC}}) {
-        nodes {
-          slug
-          productid: databaseId
-          name
-          onSale
-          sku
-          shortDescription
-          type
-          featured
-          image {
+  const slug = (await params).slug;
+
+  const productQuery = gql`
+    query ProductBySlug($slug: ID!) {
+      product(id: $slug, idType: SLUG) {
+        slug
+        productid: databaseId
+        name
+        onSale
+        sku
+        description
+        shortDescription
+        type
+        featured
+        galleryImages {
+          nodes {
             altText
             id
             sourceUrl
             srcSet
-          }
-          ... on SimpleProduct {
-            price
-            regularPrice
-            id
-          }
-          ... on VariableProduct {
-            price
-            id
-            regularPrice
-          }
-          ... on ExternalProduct {
-            price
-            id
-            externalUrl
-            regularPrice
           }
         }
-      }
-      productCategories (first: 5) {
-        nodes {
+        image {
+          altText
           id
-          name
-          slug
-          image {
-            altText
-            id
-            sourceUrl
-            srcSet
-          }
+          sourceUrl
+          srcSet
+        }
+        ... on SimpleProduct {
+          price
+          regularPrice
+          id
+        }
+        ... on VariableProduct {
+          price
+          id
+          regularPrice
+        }
+        ... on ExternalProduct {
+          price
+          id
+          externalUrl
+          regularPrice
         }
       }
     }
   `;
 
-  const data = await request(endpoint, productsCategoriesQuery) as { products: { nodes: any[] }, productCategories: { nodes: any[] } };
-  const products = data.products.nodes;
-  const categories = data.productCategories.nodes;
-  console.log(products);
-  console.log(categories);
+  const data = await request(endpoint, productQuery, { slug }) as { product: any };
+  const product = data.product;
 
   return (
    <>
@@ -174,14 +171,28 @@ export default async function Home() {
                     {/* Image selector */}
                     <div className="mx-auto mt-6 hidden w-full max-w-2xl sm:block lg:max-w-none">
                     <TabList className="grid grid-cols-4 gap-6">
-                        {product.images.map((image) => (
+                        <Tab
+                            key={product.image.id}
+                            className="group relative flex h-24 cursor-pointer items-center justify-center rounded-md bg-white text-sm font-medium uppercase text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-indigo-500/50 focus:ring-offset-4"
+                            >
+                            <span className="sr-only">{product.image.altText}</span>
+                            <span className="absolute inset-0 overflow-hidden rounded-md">
+                            <img alt="" src={product.image.sourceUrl} className="size-full object-cover" />
+                            </span>
+                            <span
+                            aria-hidden="true"
+                            className="pointer-events-none absolute inset-0 rounded-md ring-2 ring-transparent ring-offset-2 group-data-[selected]:ring-indigo-500"
+                            />
+                        </Tab>
+                        
+                        {product.galleryImages.nodes.map((image) => (
                         <Tab
                             key={image.id}
                             className="group relative flex h-24 cursor-pointer items-center justify-center rounded-md bg-white text-sm font-medium uppercase text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-indigo-500/50 focus:ring-offset-4"
                         >
-                            <span className="sr-only">{image.name}</span>
+                            <span className="sr-only">{image.altText}</span>
                             <span className="absolute inset-0 overflow-hidden rounded-md">
-                            <img alt="" src={image.src} className="size-full object-cover" />
+                            <img alt="" src={image.sourceUrl} className="size-full object-cover" />
                             </span>
                             <span
                             aria-hidden="true"
@@ -193,9 +204,12 @@ export default async function Home() {
                     </div>
 
                     <TabPanels>
-                    {product.images.map((image) => (
+                    <TabPanel key={product.image.id}>
+                        <img alt={product.image.altText} src={product.image.sourceUrl} className="aspect-square w-full object-cover sm:rounded-lg" />
+                    </TabPanel>
+                    {product.galleryImages.nodes.map((image) => (
                         <TabPanel key={image.id}>
-                        <img alt={image.alt} src={image.src} className="aspect-square w-full object-cover sm:rounded-lg" />
+                        <img alt={image.altText} src={image.sourceUrl} className="aspect-square w-full object-cover sm:rounded-lg" />
                         </TabPanel>
                     ))}
                     </TabPanels>

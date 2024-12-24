@@ -62,9 +62,6 @@ export default async function Home() {
 
   const data = await request(endpoint, productsCategoriesQuery) as { products: { nodes: any[] }, productCategories: { nodes: any[] } };
   const products = data.products.nodes;
-  const categories = data.productCategories.nodes;
-  console.log(products);
-  console.log(categories);
 
   return (
    <>
